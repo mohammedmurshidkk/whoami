@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FileDown, Mail, Linkedin, Phone, MessageSquare } from "lucide-react";
+import { FileDown, Mail, Linkedin, Phone, MessageSquare, Award, FileText } from "lucide-react";
 import { CONTACT_INFO, SOCIAL_LINKS } from "@/lib/constants";
 import {
   Dialog,
@@ -22,14 +22,21 @@ export function Header() {
         </Link>
 
         <div className="flex items-center gap-2">
-          <a
-            href="/resume.pdf"
-            download="Mohammed_Murshid_Resume.pdf"
+          <Link
+            href="/resume"
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
-            <FileDown size={14} />
+            <FileText size={14} />
             Resume
-          </a>
+          </Link>
+
+          <Link
+            href="/certificates"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <Award size={14} />
+            Certificates
+          </Link>
 
           <Dialog>
             <DialogTrigger asChild>

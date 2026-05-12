@@ -7,6 +7,7 @@ const actions = [
   { label: "See what I'm building now", sub: "RELAYET — my startup", to: "/readme" },
   { label: "View my experience", sub: "15M user systems + more", to: "/readme" },
   { label: "Download resume", sub: "Traditional PDF format", to: "/resume" },
+  { label: "View Certificate", sub: "Employee Recognition", to: "/certificates/employee-recognition" },
   { label: "Contact me", sub: "Let's talk", href: SOCIAL_LINKS.email },
 ];
 
