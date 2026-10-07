@@ -1,0 +1,398 @@
+---
+import "../styles/global.css";
+import { site } from "../data/site";
+import { content, languages, type Lang } from "../i18n/content";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = content[lang];
+const home = languages.find((l) => l.code === lang)!.path;
+const wa = site.whatsapp;
+const year = new Date().getFullYear();
+
+const stack = ["React", "Next.js", "TypeScript", "Node.js", "Express", "PostgreSQL", "Tailwind CSS", "OpenAI", "Gemini", "Claude", "WhatsApp API", "AWS", "Docker", "GSAP"];
+
+const platforms = [
+  { label: "Fiverr", href: site.fiverr },
+  { label: "Freelancer", href: site.freelancer },
+  { label: "Upwork", href: site.upwork },
+].filter((p) => p.href);
+
+const navLinks = [
+  { href: "#work", label: t.nav.work },
+  { href: "#services", label: t.nav.services },
+  { href: "#process", label: t.nav.process },
+  { href: "#faq", label: t.nav.faq },
+  { href: "#contact", label: t.nav.contact },
+];
+
+const perkIcons = [
+  '<rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 8h18M7 13l-2 2 2 2M11 17l2-4"/>',
+  '<path d="M12 3 3 8l9 5 9-5-9-5z"/><path d="m3 13 9 5 9-5"/>',
+  '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/>',
+  '<path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"/>',
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  jobTitle: t.hero.eyebrow,
+  description: t.meta.description,
+  email: site.email,
+  url: site.url,
+  address: { "@type": "PostalAddress", addressRegion: "Kerala", addressCountry: "IN" },
+  knowsLanguage: ["en", "ar", "fr"],
+  sameAs: [site.linkedin, site.github, site.fiverr, site.freelancer, site.upwork].filter(Boolean),
+};
+---
+
+<!doctype html>
+<html lang={lang} dir={t.dir}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.meta.title}</title>
+    <meta name="description" content={t.meta.description} />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="canonical" href={new URL(home, site.url).href} />
+    {languages.map((l) => <link rel="alternate" hreflang={l.code} href={new URL(l.path, site.url).href} />)}
+    <link rel="alternate" hreflang="x-default" href={site.url + "/"} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:title" content={t.meta.title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={lang === "en" ? "en_US" : lang === "ar" ? "ar_AE" : "fr_FR"} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href={lang === "ar"
+        ? "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=Jost:wght@300;400;500;600&display=swap"
+        : "https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap"}
+    />
+    <script is:inline>
+      if (matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+        document.documentElement.classList.add("motion");
+        setTimeout(() => document.documentElement.classList.remove("motion"), 4000);
+      }
+    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+
+  <body>
+    <header class="header">
+      <p class="announce">{t.announce}</p>
+      <div class="container header-row">
+        <details class="menu">
+          <summary aria-label="Menu">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7h18M3 12h18M3 17h18" /></svg>
+          </summary>
+          <nav aria-label="Mobile">
+            <ul>
+              {navLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+            </ul>
+          </nav>
+        </details>
+
+        <a href={home} class="wordmark" aria-label={site.name}>Murshid</a>
+
+        <div class="header-end">
+          <nav class="langs" aria-label="Language">
+            {
+              languages.map((l) => (
+                <a href={l.path} hreflang={l.code} lang={l.code} aria-current={l.code === lang ? "true" : undefined}>
+                  {l.label}
+                </a>
+              ))
+            }
+          </nav>
+          <a href={wa} target="_blank" rel="noopener" class="wa-link" aria-label={t.hero.secondary}>
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3z" /></svg>
+            <span>{t.nav.hire}</span>
+          </a>
+        </div>
+      </div>
+      <nav class="mainnav" aria-label="Main">
+        <ul class="container">
+          {navLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow reveal-hero">{t.hero.eyebrow}</p>
+            <h1 class="hero-title">{t.hero.title}</h1>
+            <p class="hero-text reveal-hero">{t.hero.text}</p>
+            <div class="actions reveal-hero">
+              <a href="#contact" class="btn btn-dark">{t.hero.primary}</a>
+              <a href={wa} target="_blank" rel="noopener" class="btn btn-line">{t.hero.secondary}</a>
+            </div>
+          </div>
+
+          <div class="studio" aria-hidden="true">
+            <div class="studio-frame">
+              <div class="studio-bar"><span></span><span></span><span></span></div>
+              <div class="panel panel-think is-on">
+                <div class="sketch s1"></div>
+                <div class="sketch s2"></div>
+                <div class="sketch s3"></div>
+                <svg class="arrow" viewBox="0 0 120 40"><path d="M4 30 C40 4, 80 4, 112 22" /><path d="M104 14 112 22 101 26" /></svg>
+              </div>
+              <div class="panel panel-build">
+                <div class="code"><i style="--w:40%"></i><i class="b" style="--w:62%"></i><i style="--w:28%;--i:1"></i><i style="--w:54%;--i:1"></i><i class="b" style="--w:46%;--i:2"></i><i style="--w:70%;--i:1"></i><i style="--w:36%"></i><i class="b" style="--w:58%;--i:1"></i></div>
+              </div>
+              <div class="panel panel-ship">
+                <div class="ui-top"><b></b><em class="live">Live</em></div>
+                <div class="ui-cards"><span></span><span></span><span></span></div>
+                <div class="ui-bars"><i style="--h:35%"></i><i style="--h:55%"></i><i style="--h:45%"></i><i style="--h:70%"></i><i style="--h:62%"></i><i style="--h:88%"></i></div>
+              </div>
+            </div>
+            <ol class="motto">
+              {t.hero.motto.map((m, i) => <li class={i === 0 ? "is-on" : ""}>{m}</li>)}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- Perks -->
+      <section class="perks">
+        <ul class="container perks-grid">
+          {
+            t.perks.map((p, i) => (
+              <li>
+                <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={perkIcons[i]} />
+                <div>
+                  <p class="perk-title">{p.title}</p>
+                  <p class="perk-text">{p.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <!-- Services -->
+      <section class="section container" id="services">
+        <div class="section-head reveal"><h2>{t.services.title}</h2><span class="rule"></span></div>
+        <div class="services">
+          {
+            t.services.items.map((s) => (
+              <article class="service reveal">
+                <h3>{s.title}</h3>
+                <p>{s.text}</p>
+              </article>
+            ))
+          }
+        </div>
+        <p class="center reveal"><a href="#contact" class="btn btn-line">{t.services.cta}</a></p>
+      </section>
+
+      <!-- Process -->
+      <section class="process-wrap" id="process">
+        <div class="container section">
+          <div class="section-head reveal"><h2>{t.process.title}</h2><span class="rule"></span></div>
+          <div class="process">
+            <div class="track" aria-hidden="true"><span class="track-fill"></span></div>
+            <ol class="steps">
+              {
+                t.process.steps.map((s, i) => (
+                  <li class="step">
+                    <span class="step-dot" aria-hidden="true">{i + 1}</span>
+                    <h3>{s.title}</h3>
+                    <p>{s.text}</p>
+                  </li>
+                ))
+              }
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- Work -->
+      <section class="section container" id="work">
+        <div class="section-head reveal"><h2>{t.work.title}</h2><span class="rule"></span></div>
+        <div class="featured">
+          {
+            t.work.featured.map((w, i) => (
+              <a class={`feature reveal feature-${i}`} href={w.url} target="_blank" rel="noopener">
+                <div class="feature-tile">
+                  <span class="feature-live">{t.work.live}</span>
+                  <span class="feature-mark">{w.mark}</span>
+                  <span class="feature-host" dir="ltr">{new URL(w.url).host}</span>
+                </div>
+                <p class="card-tag">{w.tag}</p>
+                <h3>{w.title}</h3>
+                <p class="card-text">{w.text}</p>
+                <p class="feature-stack" dir="ltr">{w.stack}</p>
+                <span class="feature-link">{t.work.view} <span class="feature-arrow" aria-hidden="true">↗</span></span>
+              </a>
+            ))
+          }
+        </div>
+        <div class="work">
+          {
+            t.work.items.map((w) => (
+              <article class="card reveal">
+                <div class="card-tile"><span class="card-mark">{w.mark}</span></div>
+                <p class="card-tag">{w.tag}</p>
+                <h3>{w.title}</h3>
+                <p class="card-text">{w.text}</p>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- Building now + idea -->
+      <section class="container banners">
+        <a href={wa} target="_blank" rel="noopener" class="banner banner-dark reveal">
+          <p class="banner-eyebrow">{t.building.eyebrow}</p>
+          <p class="banner-title">{t.building.title}</p>
+          <p class="banner-text">{t.building.text}</p>
+          <span class="banner-link">{t.building.link}</span>
+        </a>
+        <a href="#contact" class="banner banner-sand reveal">
+          <p class="banner-eyebrow">{t.building.side.eyebrow}</p>
+          <p class="banner-title">{t.building.side.title}</p>
+          <p class="banner-text">{t.building.side.text}</p>
+          <span class="banner-link">{t.building.side.link}</span>
+        </a>
+      </section>
+
+      <!-- Track record -->
+      <section class="section container">
+        <div class="section-head reveal"><h2>{t.record.title}</h2><span class="rule"></span></div>
+        <ul class="stats">
+          {
+            t.record.stats.map((s) => (
+              <li class="reveal">
+                <p class="stat-value" dir="ltr">
+                  <span class="count" data-to={s.value}>{s.value}</span>
+                  {s.suffix}
+                </p>
+                <p class="stat-label">{s.label}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <!-- Stack -->
+      <section class="stack-wrap">
+        <div class="container section">
+          <div class="section-head reveal"><h2>{t.stack.title}</h2><span class="rule"></span></div>
+          <ul class="chips" dir="ltr">
+            {stack.map((s) => <li class="chip">{s}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section class="about">
+        <div class="container about-grid">
+          <h2 class="reveal">{t.about.title}</h2>
+          <div class="reveal">
+            <p>{t.about.text}</p>
+            <a href={site.linkedin} target="_blank" rel="noopener" class="btn btn-line">{t.about.cta}</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="section container narrow" id="faq">
+        <div class="section-head reveal"><h2>{t.faq.title}</h2><span class="rule"></span></div>
+        <div class="faq">
+          {
+            t.faq.items.map((f) => (
+              <details>
+                <summary>
+                  {f.q}
+                  <span class="plus" aria-hidden="true" />
+                </summary>
+                <p>{f.a}</p>
+              </details>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section class="contact" id="contact">
+        <div class="container contact-inner">
+          <p class="eyebrow">{t.hero.eyebrow}</p>
+          <h2 class="contact-title">
+            {t.hero.motto.map((m) => <span class="contact-line">{m}</span>)}
+          </h2>
+          <p class="contact-text">{t.footer.tagline}</p>
+          <div class="actions center-actions">
+            <a href={wa} target="_blank" rel="noopener" class="btn btn-wa">{t.footer.chat}</a>
+            <a href={`mailto:${site.email}`} class="btn btn-line" dir="ltr">{site.email}</a>
+          </div>
+          {
+            platforms.length > 0 && (
+              <p class="platforms">
+                {platforms.map((p) => (
+                  <a href={p.href} target="_blank" rel="noopener">
+                    {p.label}
+                  </a>
+                ))}
+              </p>
+            )
+          }
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-grid">
+        <div>
+          <p class="wordmark wordmark-sm">Murshid</p>
+          <p class="footer-text">{t.footer.tagline}</p>
+          <a href={wa} target="_blank" rel="noopener" class="btn btn-wa btn-sm">{t.footer.chat}</a>
+        </div>
+        <nav aria-label={t.footer.quick}>
+          <p class="footer-head">{t.footer.quick}</p>
+          <ul>
+            {navLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+          </ul>
+        </nav>
+        <nav aria-label={t.footer.servicesTitle}>
+          <p class="footer-head">{t.footer.servicesTitle}</p>
+          <ul>
+            {t.services.items.map((s) => <li><a href="#services">{s.title}</a></li>)}
+          </ul>
+        </nav>
+        <div>
+          <p class="footer-head">{t.footer.contact}</p>
+          <ul>
+            <li><a href={`mailto:${site.email}`} dir="ltr">{site.email}</a></li>
+            <li><a href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href={site.github} target="_blank" rel="noopener">GitHub</a></li>
+            {platforms.map((p) => <li><a href={p.href} target="_blank" rel="noopener">{p.label}</a></li>)}
+            <li class="muted">{t.footer.location}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <span>© {year} {site.name}. {t.footer.rights}</span>
+        <span class="langs">
+          {languages.map((l) => <a href={l.path} lang={l.code} aria-current={l.code === lang ? "true" : undefined}>{l.label}</a>)}
+        </span>
+      </div>
+    </footer>
+
+    <script>
+      import { initMotion } from "../scripts/story";
+      initMotion();
+    </script>
+  </body>
+</html>
